@@ -7,6 +7,7 @@
 //
 
 var React = require('react/addons');
+var Swipe = require('../../lib/swipe.js');
 
 var {parseJSON} = require('../../lib/jsonUtils');
 var render = require('../../lib/render.jsx');
@@ -68,6 +69,10 @@ var Project = React.createClass({
         }
       }
     }
+
+    var eggPattern = ["UP", "UP","DOWN","DOWN","LEFT","RIGHT","LEFT","RIGHT"];
+    Swipe.checkSwipe(this.getDOMNode(), eggPattern);
+
   },
 
   render: function () {
