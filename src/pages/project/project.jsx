@@ -11,7 +11,9 @@ var Swipe = require('../../lib/swipe.js');
 
 var {parseJSON} = require('../../lib/jsonUtils');
 var render = require('../../lib/render.jsx');
+var dispatcher = require('../../lib/dispatcher');
 
+var ModalImage = require('../../components/modal-image/modal-image.jsx');
 var Loading = require('../../components/loading/loading.jsx');
 var {Menu, PrimaryButton, SecondaryButton, FullWidthButton} = require('../../components/action-menu/action-menu.jsx');
 var DPad = require('../../components/d-pad/d-pad.jsx');
@@ -69,10 +71,23 @@ var Project = React.createClass({
         }
       }
     }
-
+    
     var eggPattern = ["UP", "UP","DOWN","DOWN","LEFT","RIGHT","LEFT","RIGHT"];
-    Swipe.checkSwipe(this.getDOMNode(), eggPattern);
+    var reward = () => {
+      this.showCatGif();
+    }
+    Swipe.checkSwipe(this.getDOMNode(), eggPattern, reward);
+  },
 
+  showCatGif: function () {
+    var gifCount = 5;
+    var gifNum = Math.floor(Math.random()*(5)+1);
+    var imagePath = "../../gif/cat"+gifNum+".gif";
+    dispatcher.fire('modal-image:show', {
+      config: {
+        image: imagePath
+      }
+    });
   },
 
   render: function () {
@@ -100,7 +115,7 @@ var Project = React.createClass({
           { this.generateAddContainers(isPlayOnly) }
           </div>
         </div>
-
+        <ModalImage/>
         <Menu fullWidth={this.state.params.mode === 'link'}>
           <SecondaryButton side="left" onClick={this.zoomFromPage} off={this.state.params.mode !== 'edit' || !this.state.matrix || this.state.matrix[0] < 1} icon="../../img/zoom-out-blue.svg" />
           <PrimaryButton url={ this.getPageURL(this.state.params, this.state.selectedEl) } off={isPlayOnly || !this.state.selectedEl} href="/pages/page" icon="../../img/pencil.svg" />

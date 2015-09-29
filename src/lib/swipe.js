@@ -21,28 +21,29 @@ module.exports={
     }
   },
 
-  checkSwipe: function(element, pattern){
+  checkSwipe: function(element, pattern, callback){
       var xStart = null;
       var yStart = null;
       var patternPos = 0;
+      console.log(element);
 
       var handleTouchStart =(event)=>{
-	xStart = event.changedTouches[0].clientX;
-	yStart = event.changedTouches[0].clientY;
+        xStart = event.changedTouches[0].clientX;
+        yStart = event.changedTouches[0].clientY;
       }
 
       var handleTouchEnd =(event)=>{
-	var xEnd = event.changedTouches[0].clientX;
-	var yEnd = event.changedTouches[0].clientY;
-	var direction = this.calculateSwipe(xStart, yStart, xEnd, yEnd);
-	if(direction === pattern[patternPos]){
-	  patternPos++
-	} else {
-	  patternPos = 0;
-	}
-	if(patternPos === pattern.length){
-	  window.alert("easter egg!");
-	}
+        var xEnd = event.changedTouches[0].clientX;
+        var yEnd = event.changedTouches[0].clientY;
+        var direction = this.calculateSwipe(xStart, yStart, xEnd, yEnd);
+        if(direction === pattern[patternPos]){
+          patternPos++;
+        } else {
+          patternPos = 0;
+        }
+        if(patternPos === pattern.length){
+          callback();
+        }
       }
       element.addEventListener("touchstart", handleTouchStart, false);
       element.addEventListener("touchend", handleTouchEnd, false);
