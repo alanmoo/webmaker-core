@@ -11,6 +11,9 @@ var Alert = React.createClass({
       isVisible: true
     });
   },
+  componentDidMount: function(){
+    this.getDOMNode().addEventListener('touchStart', e => {this.setState({touched: true}); console.log(this.state);});
+  },
   hide: function () {
     this.setState({
       isVisible: false

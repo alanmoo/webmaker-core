@@ -1,3 +1,8 @@
+var should = require('should');
+var React = require('react');
+var Tappable = require('react-tappable');
+var simulant = require('simulant');
+
 // Make console.warn throw
 var warn = console.warn;
 console.warn = function (warning) {
@@ -5,12 +10,6 @@ console.warn = function (warning) {
   warn.apply(console, arguments);
 };
 
-
-var should = require('should');
-var foo = 2;
-
-describe('foo', function(){
-	it('should equal 2', function(){
-		should.equal(foo, 2);
-	})
-})
+//TODO: Why does switching this regex to /\.test\.js make karma blow up?
+var context = require.context('./', false, /-test\.js$/);
+context.keys().forEach(context);
